@@ -1,6 +1,6 @@
 import requests
 from secretsu import get_url
-
+from secretsu import reformator
 
 def get_hook_info(url):
 
@@ -10,13 +10,14 @@ def get_hook_info(url):
 
 def send_message(url, msg):
     payload = {
-        "content": msg
+        "username": "Oskar",
+        "content": msg,
+        "avatar_url": "https://i.imgur.com/Q5W52JU.png"
     }
     requests.post(url, json=payload)
 
 
 def start():
-    r = requests
 
     print('Choose WebHook')
     print('1 - Testing on klacek server')
@@ -39,6 +40,7 @@ def start():
         print('\nEnter message, empty to end')
         msg = str(input("> "))
         if msg != "":
+            msg = reformator(msg)
             send_message(url, msg)
 
 
