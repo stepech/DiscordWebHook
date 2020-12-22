@@ -130,3 +130,4 @@ dmypy.json
 
 #Custom
 /secretsu.py
+/urls.txt
