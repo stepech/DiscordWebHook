@@ -1,8 +1,52 @@
-from normal_mode import normal
-from add_bot import add_bot
+from reformator import reformator
+import requests
 
 DISCORD_WEBSITE = "https://discord.com/api/webhooks/"
 URLS_FOLDER = "urls.txt"
+
+
+def normalrun(urls):
+    print("\nPick number of bot to be used")
+
+    try:
+        x = int(input("> "))
+    except:
+        print("Choose only valid number between 1 and", str(len(urls)))
+        normalrun(urls)
+        quit()
+
+    i = 1
+    for key in urls:
+        if i == x:
+            bot = urls[key]
+            break
+        i += 1
+    r = requests
+    info = r.get(DISCORD_WEBSITE + bot)
+    info = info.text
+    print(info)
+
+    payload = {}
+    print("Do you want to use default name (seen above) or use your own?")
+    y = input("Leave empty for default name or enter your name > ")
+    if y != "":
+        payload["username"] = y
+
+    print("Do you want to use default image or use your own?")
+    y = input("Leave empty for default image or enter url to your own > ")
+    if y != "":
+        payload["avatar_url"] = y
+
+    while True:
+        print("\nEnter your message, empty to end")
+        message = input("> ")
+        if message == "":
+            break
+
+        message = reformator(message)
+        payload["content"] = message
+
+        r.post(DISCORD_WEBSITE + bot, json=payload)
 
 
 def open_file(file):
@@ -35,22 +79,7 @@ def start():
         print(i, "=", key)
         i += 1
 
-    if len(urls) == 0:
-        add_bot()
-    else:
-        try:
-            choice = int(input("Do you want to use one of loaded (1) or add new(2)"))
-            if choice == 1:
-                normal(urls)
-            elif choice == 2:
-                add_bot()
-                start()
-            else:
-                print("Enter only '1' or '2'")
-                quit()
-        except:
-            print("Enter only '1' or '2'")
-            quit()
+    normalrun(urls)
 
 
 if __name__ == '__main__':

@@ -129,5 +129,5 @@ dmypy.json
 .pyre/
 
 #Custom
-/secretsu.py
 /urls.txt
+/reformator.py
